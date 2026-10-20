@@ -12,13 +12,30 @@ struct movie {
 };
 
 int main(int argc, char *argv[]) {
-    printf("%s\n", argv[1]);
     FILE *file = fopen( argv[1], "r");
 
     if (file == NULL) {
         printf("Unable to open file\n");
         return 1;
     }
+
+    char *line = NULL;
+    size_t len = 0;
+
+    int movieCount = 0;
+
+    // Read and skip the header
+    getline(&line, &len, file);
+
+    while (getline(&line, &len, file) != -1) {
+        printf("%s", line);
+
+        movieCount++;
+    }
+    printf("%d\n", movieCount);
+
+    free(line);
+    fclose(file);
 
     return 0;
 }
